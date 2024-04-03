@@ -164,4 +164,16 @@ Router.put("/updatenotifications", StudAuth, (req: Request, res: Response) => {
   studentController.UpdateNotifications(req, res);
 });
 
+
+Router.get("/getallactivity", StudAuth, (req: Request, res: Response) => {
+  studentController.GetAllActivity(req, res);
+});
+
+Router.get("/getrank/:todoID", StudAuth, (req: Request, res: Response) => {
+  
+  studentController.GetRank(req, res);
+});
+
+
+
 export default Router;

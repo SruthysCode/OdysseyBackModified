@@ -29,7 +29,7 @@ class MentorUsecase implements IMentor {
     private MentorRepository: MentorRepository,
     private otprepository: OtpRepository,
     private ActivityRepository: ActivityRepository,
-    private studentRepository : StudentRepository
+    private studentRepository: StudentRepository
   ) {
     // this.MentorRepository = MentorRepository;
   }
@@ -192,7 +192,7 @@ class MentorUsecase implements IMentor {
 
   async sendOTP(body: any) {
     try {
-      const { email, isverified } = body.student_detail;
+      const { email, isverified } = body.signup_detail;
       if (isverified) {
         const emailExist = await this.MentorRepository.authenticateMentor(
           email
@@ -864,8 +864,7 @@ class MentorUsecase implements IMentor {
 
   async GetRank(todoID: string) {
     try {
-      
-      const response= await this.ActivityRepository.GetRankList(todoID)
+      const response = await this.ActivityRepository.GetRankList(todoID);
       // const response = await this.ActivityRepository.GetRank();
       if (!response.data) {
         return {
@@ -896,12 +895,10 @@ class MentorUsecase implements IMentor {
     }
   }
 
-  
   async FinalRank() {
     try {
-      
-      const response= await this.ActivityRepository.getFinalRank()
-      
+      const response = await this.ActivityRepository.getFinalRank();
+
       if (!response.data) {
         return {
           status: HttpStatus.NotFound,
@@ -952,14 +949,14 @@ class MentorUsecase implements IMentor {
           },
         };
       }
-      
-      const Details= await this.ActivityRepository.getDetails(activityID);
-console.log("mentor", Details.data?.student_id
-)
-const studentID = String(Details.data?.student_id)
-const updateNotify = await this.studentRepository.UpdateNotification(studentID, 'Like by ' +name )
 
-
+      const Details = await this.ActivityRepository.getDetails(activityID);
+      console.log("mentor", Details.data?.student_id);
+      const studentID = String(Details.data?.student_id);
+      const updateNotify = await this.studentRepository.UpdateNotification(
+        studentID,
+        "Like by " + name
+      );
 
       return {
         status: response.success ? HttpStatus.Success : HttpStatus.ServerError,
@@ -967,7 +964,7 @@ const updateNotify = await this.studentRepository.UpdateNotification(studentID, 
           success: response.success,
           message: response.message,
           data: response.data,
-          studentID : studentID,
+          studentID: studentID,
         },
       };
     } catch (error) {
@@ -1002,19 +999,21 @@ const updateNotify = await this.studentRepository.UpdateNotification(studentID, 
         };
       }
 
-      const Details= await this.ActivityRepository.getDetails(activityID);
-      console.log("mentor", Details.data?.student_id
-      )
-      const studentID = String(Details.data?.student_id)
-      const updateNotify = await this.studentRepository.UpdateNotification(studentID, 'Comment by '+ name)
-      
+      const Details = await this.ActivityRepository.getDetails(activityID);
+      console.log("mentor", Details.data?.student_id);
+      const studentID = String(Details.data?.student_id);
+      const updateNotify = await this.studentRepository.UpdateNotification(
+        studentID,
+        "Comment by " + name
+      );
+
       return {
         status: response.success ? HttpStatus.Success : HttpStatus.ServerError,
         data: {
           success: response.success,
           message: response.message,
           data: response.data,
-          studentID : studentID,
+          studentID: studentID,
         },
       };
     } catch (error) {
@@ -1028,10 +1027,9 @@ const updateNotify = await this.studentRepository.UpdateNotification(studentID, 
     }
   }
 
-  
   async DisplayActivity() {
     try {
-      const response= await this.ActivityRepository.DisplayActivity()
+      const response = await this.ActivityRepository.DisplayActivity();
       // const response = await this.ActivityRepository.GetRank();
       if (!response.data) {
         return {
@@ -1061,8 +1059,6 @@ const updateNotify = await this.studentRepository.UpdateNotification(studentID, 
       };
     }
   }
-
-
 }
 
 export default MentorUsecase;

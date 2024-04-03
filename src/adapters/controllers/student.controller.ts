@@ -311,6 +311,33 @@ class StudentController {
     }
   }
 
+  
+  
+  async GetAllActivity(req: Request, res: Response): Promise<void> {
+    try {
+      const response = await this.StudentUsecase.GetAllActivity(req);
+      res.status(response.status).send(response.data);
+    } catch (error) {
+      res.status(500).send({
+        success: false,
+        message: ErrorMessage.ServerError,
+      });
+    }
+  }
+
+  async GetRank(req: Request, res: Response): Promise<void> {
+    try {
+      const response = await this.StudentUsecase.GetRank(req);
+      res.status(response.status).send(response.data);
+    } catch (error) {
+      res.status(500).send({
+        success: false,
+        message: ErrorMessage.ServerError,
+      });
+    }
+  }
+
+
 }
 
 export default StudentController;

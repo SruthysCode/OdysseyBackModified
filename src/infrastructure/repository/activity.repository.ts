@@ -1257,6 +1257,69 @@ console.log("act", Details[0])
 }
 
 
+async GetAllActivity(studentID: string) {
+  try {
+    const Details=  await Activity.aggregate([
+      {
+        '$match': {
+          'student_id': studentID
+        }
+      }, {
+        '$lookup': {
+          'from': 'todos', 
+          'let': {
+            'todoid': {
+              '$toObjectId': '$todo_id'
+            }
+          }, 
+          'pipeline': [
+            {
+              '$match': {
+                '$expr': {
+                  '$eq': [
+                    '$_id', '$$todoid'
+                  ]
+                }
+              }
+            }
+          ], 
+          'as': 'todo'
+        }
+      }, {
+        '$unwind': {
+          'path': '$todo'
+        }
+      }, {
+        '$project': {
+          'todo_id': 1, 
+          'todoname': '$todo.todo_name'
+        }
+      }
+    ]
+
+)
+if (!Details) {
+  return {
+    success: false,
+    message: ErrorMessage.NotFound,
+  };
+}
+
+return {
+  success: true,
+  message: "All Activity fetched",
+  data: Details,
+};
+} catch (error) {
+return {
+  success: false,
+  message: `Failed to fetch Activity details ${error}`,
+};
+}
+}
+
+
+
 }
 
 export default ActivityRepository;

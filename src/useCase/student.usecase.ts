@@ -1091,6 +1091,101 @@ class StudentUsecase implements IStudent {
     }
   }
 
+  
+  async GetAllActivity(req: Request) {
+    try {
+      const studentID  = String(req.headers.studentID);
+      const response = await this.ActivityRepository.GetAllActivity(studentID);
+      if (!response.data) {
+        return {
+          status: HttpStatus.NotFound,
+          
+          data: {
+            success: false,
+            message: response.message,
+            data: response.data,
+          },
+        };
+      }    
+      return {
+        status: response.success ? HttpStatus.Success : HttpStatus.ServerError,
+        data: {
+          success: response.success,
+          message: response.message,
+          data: response.data,
+          studentID: studentID,
+        },
+      };
+    } catch (error) {
+      return {
+        status: HttpStatus.ServerError,
+        data: {
+          success: false,
+          message: ErrorMessage.ServerError,
+        },
+      };
+    }
+  }
+
+
+  
+  async GetRank(req: Request) {
+    try {
+      const studentID  = String(req.headers.studentID);
+      const todoID = req.params.todoID;
+      const response = await this.ActivityRepository.GetRankList(todoID);
+
+      if (!response.data) {
+        return {
+          status: HttpStatus.NotFound,
+          
+          data: {
+            success: false,
+            message: response.message,
+            data: response.data,
+          },
+        };
+      }    
+      const student = response.data.filter(student => student.id.toString() === studentID);
+      console.log(studentID,"rank result ", student);
+      
+
+if (!student) {
+    console.log(student);
+    return {
+      status: HttpStatus.NotFound,
+      
+      data: {
+        success: false,
+        message: response.message,
+        data:student,
+      },
+    };
+
+}
+
+
+      return {
+        status: response.success ? HttpStatus.Success : HttpStatus.ServerError,
+        data: {
+          success: response.success,
+          message: response.message,
+          data: student,
+          
+        },
+      };
+    } catch (error) {
+      return {
+        status: HttpStatus.ServerError,
+        data: {
+          success: false,
+          message: ErrorMessage.ServerError,
+        },
+      };
+    }
+  }
+
+
 
 }
 
