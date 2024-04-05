@@ -12,7 +12,7 @@ const createServer = () => {
   app.use(
     cors({
       credentials: true,
-      origin: ["http://localhost:4200","https://read-odyssey.netlify.app"],
+      origin: ["https://read-odyssey.netlify.app","http://localhost:4200"],
     })
   );
 
